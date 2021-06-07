@@ -1,6 +1,7 @@
 import React, { createContext, useState } from 'react'
 import { AuthContextData, AuthData } from '../types'
 
+
 import firebase from 'firebase'
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
@@ -8,7 +9,7 @@ export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 export const AuthProvider: React.FC = ({children}) => {
     const [authData, setAuthData] = useState<AuthData>()
     var firebaseConfig = {
-        apiKey: "AIzaSyCHBQERYLwWXV7c0WNunTB0YTo1El05bfI",
+        apiKey:'AIzaSyCHBQERYLwWXV7c0WNunTB0YTo1El05bfI',
         authDomain: "to-do-app-65492.firebaseapp.com",
         projectId: "to-do-app-65492",
         storageBucket: "to-do-app-65492.appspot.com",

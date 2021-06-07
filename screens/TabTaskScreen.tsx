@@ -30,57 +30,37 @@ export default function TabTaskScreen<Props>({}){
     const [isFilterCompleted, setIsFilterCompleted] = useState(false)
     const [isFilterInCompleted, setIsFilterInCompleted] = useState(false)
     const [searchQuery, setSearchQuery] = useState('')
-    // const[taskList, settaskList] = useState<any[]>([
-    //     {key: 1, isDone: false, description: 'Jl.peninggaran', time: '20:00', title:'My First Task'},
-    //     {key: 2, isDone: true, description: 'Jl.peninggaran 2', time: '20:00', title:'My Second Task'},
-    //     {key: 3, isDone: false, description: 'my head my mind if you dont think i cant its complicated no matter i only wanna do bad things to you do the same yeah. bad things to you. i want you forever', time: '20:00', title:'My Third Task'}
-    // ])
-    const db = firebase.firestore();
     
-    const fetchTask = async () => {
-        return db.collection('users').doc(authContext.authData?.uid).get()
-    }
-    const setTaskFirebase = (newTask:Array<object>) => {
-        return db.collection('users').doc(authContext.authData?.uid).set(newTask)
-    }
-    useEffect(() => {
-        // fetchTask().then((doc) => {
-        //     const data: firebase.firestore.DocumentData | undefined = doc.data()
-        //     if (doc.exists && data && data.tasks !== undefined) {
-        //         setTaskList(data.tasks)
-        //         console.log('head')
-        //     }else {
-        //         console.log("No such documentss!");
-        //     }
-        // }).catch((error) => {
-        //     console.log("Error : " + error)
-        // })
-        const fetchTask = async () =>{
-            try {
-                const db = firebase.firestore();
-                const ref = db.collection("users");
+    const db = firebase.firestore();
+ 
+    const fetchTask = async() =>{
+        try {
+            const db = firebase.firestore();
+            const ref = db.collection("users");
 
-                const docs = await ref.doc(authContext.authData?.uid).get()
-                const data: firebase.firestore.DocumentData | undefined = docs.data()
-                if (docs.exists && data) {
-                    if (data.tasks !== undefined) {
-                        setTaskList(data.tasks)
-                        console.log('head')
-                    }
+            const docs = await ref.doc(authContext.authData?.uid).get()
+            const data: firebase.firestore.DocumentData | undefined = docs.data()
+            if (docs.exists && data) {
+                if (data.tasks !== undefined) {
+                    setTaskList(data.tasks)
                 }
-               
-
-            } catch (error) {
-                console.log("Error : " + error)
             }
+           
+
+        } catch (error) {
+            console.log("Error : " + error)
         }
-    })
+    }
+    
+    useEffect(() => {
+        fetchTask();
+    }, [])
 
 
     let name = authContext.authData?.displayName
     const FloatingButton : React.FC<ButtonParam> = ({style, onPress}) => (
         <TouchableOpacity style={style} onPress={onPress}>
-            <Image source={{uri: 'https://storage.googleapis.com/image_bucket_todo/add.svg'}} style={{width: 30, height: 30, }}/>
+            <Image source={require('../assets/images/add.svg')} style={{width: 30, height: 30, }}/>
         </TouchableOpacity>
     )   
     const AddTaskHandler = () => {
@@ -159,6 +139,7 @@ export default function TabTaskScreen<Props>({}){
     }
     
     const RemoveTaskHandler = (key:number) => {
+        console.log(key)
         setTaskList((prevTaskList) => {
             return prevTaskList.filter((task) => task.key != key)
         })
@@ -434,7 +415,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 7,
     }, 
     signOut: {
-        backgroundColor: 'CE1EC7',
+        backgroundColor: '#CE1EC7',
         alignItems: 'center'
     },
     signOutText: {
